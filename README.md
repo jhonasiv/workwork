@@ -21,8 +21,8 @@ plugins, like Telescope. One could now browse through all the files included in
 the multiple folders linked to the workspace, instead of a measly single
 folder!
 
-Ah, and if you are wondering about the name. It's a tribute to a -- now old --
-RTS, where some characters that could never stop saying "Work Work" whenever
+Ah, and if you are wondering about the name. It's a tribute to a, now old,RTS,
+where some characters that could never stop saying "Work Work" whenever
 they were ordered around. If you played it, you know what I mean. Me busy,
 leave me alone!
 
@@ -33,6 +33,10 @@ The Full Roadmap still is TBD, but for now I plan to:
 - [ ] Add git_files support for workspace with Telescope 
 - [ ] Better manage your workspaces via a window
 - [ ] Store current select workspace so it will be remembered and autoloaded at startup
+- [ ] Integrate with session management plugins
+- [ ] Integrate with dressing
+- [ ] Support a default `finder` (right now fd or find)
+- [ ] Support fzf-lua (this is a bit down the priority list, I didnt quite get how to have a good UX with its keymaps)
 - [ ] ?
 
 # How Workwork?
