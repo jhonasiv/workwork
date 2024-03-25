@@ -8,7 +8,7 @@ M.default = {
 		telescope = {
 			enable = false,
 			find_opts = { "-type", "f", "-not", "-path", "'*/\\.git/*'", "-printf", "'%P\n'" },
-			fd_opts = { "--color=never", "--type", "f", "--hidden", "--follow" },
+			fd_opts = { "--color=never", "--type", "f", "--hidden", "--follow", "--exclude", ".git" },
 		},
 		fzf_lua = {
 			enable = false,

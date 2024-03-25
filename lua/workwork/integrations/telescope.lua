@@ -54,6 +54,8 @@ M.workspace_files = function(opts)
 		cmd = { "find", folders_str, _WorkWorkOpts.integrations.telescope.find_opts }
 	end
 
+	cmd = vim.tbl_flatten(cmd)
+
 	pickers
 		.new(opts, {
 			prompt_title = "Workspace Files:",
