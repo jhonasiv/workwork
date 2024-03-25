@@ -87,8 +87,8 @@ M.save = function()
 		return
 	end
 
-	local json_data = vim.fn.json_encode(_WorkWorkWorkspaces)
 	local file = io.open(opts.storage_file, "w+")
+	local json_data = vim.fn.json_encode({ workspaces = _WorkWorkWorkspaces, selected = M.current_workspace })
 	if file then
 		file:write(json_data)
 		file:close()
@@ -104,7 +104,11 @@ M.load = function()
 	local file = io.open(opts.storage_file, "r")
 	if file then
 		local json_data = file:read("*a")
-		_WorkWorkWorkspaces = vim.fn.json_decode(json_data)
+		local workwork_data = vim.fn.json_decode(json_data) or {}
+		_WorkWorkWorkspaces = workwork_data.workspaces or {}
+		if opts.autoload_selected_workspace then
+			M.current_workspace = workwork_data.selected or nil
+		end
 		file:close()
 		return
 	end
