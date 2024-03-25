@@ -1,3 +1,7 @@
+if not pcall(require, "plenary") then
+	error("nvim-lua/plenary plugin is required but it is not loaded")
+end
+
 local Path = require("plenary.path")
 local uv = require("luv")
 
