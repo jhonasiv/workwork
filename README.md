@@ -30,16 +30,14 @@ leave me alone!
 
 The Full Roadmap still is TBD, but for now I plan to:
 
-- [x] Store current select workspace so it will be remembered and autoloaded at startup
-- [x] Display only files on Telescopes' worskpace_files 
-- [ ] Add capability for autoloading the selected workspace that contains cwd
-- [ ] Add git_files support for workspace with Telescope 
-- [ ] Better manage your workspaces via a window
+- [ ] Allowing different autoselection types on load 
+- [ ] Allow setting default command line tools for different actions
+- [ ] Improve Telescope integration
+- [ ] Integrate fzf-lua
+- [ ] Integrate with statusline plugins
+- [ ] Improve basic UI for some actions
 - [ ] Integrate with session management plugins
-- [ ] Integrate with dressing
-- [ ] Support a default `finder` (right now fd or find)
-- [ ] Support fzf-lua (this is a bit down the priority list, I didnt quite get how to have a good UX with its keymaps)
-- [ ] ?
+- [ ] Integrate with file tree plugins (if possible)
 
 # How Workwork?
 
