@@ -8,21 +8,21 @@ M.setup = function(user_opts)
 	_WorkWorkOpts = vim.tbl_deep_extend("force", M.config.default, user_opts)
 	user_opts = _WorkWorkOpts
 
-	local file = io.open(user_opts.storage_file, "r")
+	local file = io.open(user_opts.state_file, "r")
 	local create_file_anew = file == nil
 	if file then
 		file:close()
 	else
-		error("Could not open file at " .. user_opts.storage_file)
+		error("Could not open file at " .. user_opts.state_file)
 	end
 
 	if create_file_anew then
-		file = io.open(user_opts.storage_file, "w")
+		file = io.open(user_opts.state_file, "w")
 		if file then
 			file:write(vim.fn.json_encode({}))
 			file:close()
 		else
-			error("Failed trying to write to storage file at " .. user_opts.storage_file)
+			error("Failed trying to write to storage file at " .. user_opts.state_file)
 		end
 	end
 

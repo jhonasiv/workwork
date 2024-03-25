@@ -1,7 +1,7 @@
 local M = {}
 
 M.default = {
-	storage_file = vim.fn.stdpath("state") .. "/workwork.json",
+	state_file = vim.fn.stdpath("state") .. "/workwork.json",
 	autoselect_on_create = true,
 	autoload_selected_workspace = true,
 	autosave = {

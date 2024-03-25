@@ -87,21 +87,21 @@ M.save = function()
 		return
 	end
 
-	local file = io.open(opts.storage_file, "w+")
 	local json_data = vim.fn.json_encode({ workspaces = _WorkWorkWorkspaces, selected = M.current_workspace })
+	local file = io.open(opts.state_file, "w+")
 	if file then
 		file:write(json_data)
 		file:close()
 		return
 	end
 
-	error("Could not save workspace since the storage file cannot be opened at " .. opts.storage_file)
+	error("Could not save workspace since the storage file cannot be opened at " .. opts.state_file)
 end
 
 M.load = function()
 	local opts = _WorkWorkOpts or {}
 
-	local file = io.open(opts.storage_file, "r")
+	local file = io.open(opts.state_file, "r")
 	if file then
 		local json_data = file:read("*a")
 		local workwork_data = vim.fn.json_decode(json_data) or {}
@@ -113,7 +113,7 @@ M.load = function()
 		return
 	end
 
-	error("Could not load workspace because workwork state file cannot be opened at " .. opts.storage_file)
+	error("Could not load workspace because workwork state file cannot be opened at " .. opts.state_file)
 end
 
 return M
