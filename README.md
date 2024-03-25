@@ -30,9 +30,11 @@ leave me alone!
 
 The Full Roadmap still is TBD, but for now I plan to:
 
+- [x] Store current select workspace so it will be remembered and autoloaded at startup
+- [ ] Add capability for autoloading the selected workspace that contains cwd
+- [ ] Display only files on Telescopes' worskpace_files 
 - [ ] Add git_files support for workspace with Telescope 
 - [ ] Better manage your workspaces via a window
-- [ ] Store current select workspace so it will be remembered and autoloaded at startup
 - [ ] Integrate with session management plugins
 - [ ] Integrate with dressing
 - [ ] Support a default `finder` (right now fd or find)

@@ -3,18 +3,13 @@ local M = {}
 _WorkWorkWorkspaces = _WorkWorkWorkspaces or {}
 
 M._add_folder_to_workspace = function(root_path, ws)
-	local opts = _WorkWorkOpts or {}
-
 	ws = ws or M._currently_selected()
 	if _WorkWorkWorkspaces[ws] == nil then
 		error("No workspace named " .. ws)
 	end
 	table.insert(_WorkWorkWorkspaces[ws], root_path)
 
-	if opts.autosave == true or opts.autosave.on_new_folder then
-		M._save()
-	end
-	return _WorkWorkWorkspaces[ws]
+	M._save()
 end
 
 M._create = function(root_path, ws)
@@ -45,8 +40,6 @@ M._select = function(ws)
 	end
 
 	M.current_workspace = ws
-	print("Selected " .. M.current_workspace .. " workspace")
-	return ws
 end
 
 M._currently_selected = function()
@@ -106,7 +99,7 @@ M.load = function()
 		local json_data = file:read("*a")
 		local workwork_data = vim.fn.json_decode(json_data) or {}
 		_WorkWorkWorkspaces = workwork_data.workspaces or {}
-		if opts.autoload_selected_workspace then
+		if opts.autoload_selected == "last" then
 			M.current_workspace = workwork_data.selected or nil
 		end
 		file:close()

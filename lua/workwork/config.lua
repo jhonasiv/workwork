@@ -2,12 +2,8 @@ local M = {}
 
 M.default = {
 	state_file = vim.fn.stdpath("state") .. "/workwork.json",
+	autoload_selected = "last",
 	autoselect_on_create = true,
-	autoload_selected_workspace = true,
-	autosave = {
-		on_create = false,
-		on_new_folder = false,
-	},
 	integrations = {
 		telescope = {
 			enable = false,
