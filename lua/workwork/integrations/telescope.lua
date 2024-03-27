@@ -2,13 +2,21 @@ if not pcall(require, "telescope") then
 	error("nvim-telescope/telescope.nvim must be loaded to use this integration")
 end
 
+if not pcall(require, "plenary") then
+	error("nvim-lua/plenary must be loaded to use this integration")
+end
+
 local config = require("telescope.config").values
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local previewer = require("telescope.previewers")
+local make_entry = require("telescope.make_entry")
+
 local core = require("workwork.core")
+
+local Job = require("plenary.job")
 
 _WorkWorkOpts = _WorkWorkOpts or {}
 
@@ -64,6 +72,42 @@ M.workspace_files = function(opts)
 		.new(opts, {
 			prompt_title = "Workspace Files:",
 			finder = finders.new_oneshot_job(cmd),
+			previewer = config.file_previewer(opts),
+			sorter = config.file_sorter(opts),
+		})
+		:find()
+end
+
+M.git_files = function(opts)
+	opts = opts or {}
+
+	local folders = core._list_folders()
+	local jobs_and_folders = {}
+	for _, folder in ipairs(folders) do
+		local job = Job:new({
+			command = "git",
+			args = { "--git-dir=" .. folder .. "/.git", "ls-files" },
+			cwd = "/usr/bin",
+		})
+		vim.list_extend(jobs_and_folders, { { job = job, folder = folder } })
+		job:sync()
+	end
+
+	local results = {}
+	for _, info in ipairs(jobs_and_folders) do
+		local job_results = info.job:result()
+		for _, result in ipairs(job_results) do
+			table.insert(results, info.folder .. "/" .. result)
+		end
+	end
+
+	pickers
+		.new(opts, {
+			prompt_title = "Git Files in the Workspace:",
+			finder = finders.new_table({
+				results = results,
+				entry_maker = make_entry.gen_from_file({}),
+			}),
 			previewer = config.file_previewer(opts),
 			sorter = config.file_sorter(opts),
 		})
