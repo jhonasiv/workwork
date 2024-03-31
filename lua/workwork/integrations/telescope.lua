@@ -9,6 +9,7 @@ local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local previewer = require("telescope.previewers")
 local core = require("workwork.core")
+local utils = require("workwork.utils")
 
 _WorkWorkOpts = _WorkWorkOpts or {}
 
@@ -45,17 +46,16 @@ M.select = function(opts)
 		:find()
 end
 
-M.workspace_files = function(opts)
+M.files = function(opts)
 	opts = opts or {}
 	local folders = core._list_folders()
-	local folders_str = table.concat(folders, " ")
 	local cmd
 	if vim.fn.executable("fdfind") then
-		cmd = { "fdfind", ".", folders_str, _WorkWorkOpts.integrations.telescope.fd_opts }
+		cmd = { "fdfind", ".", folders, _WorkWorkOpts.integrations.telescope.opts.fd_opts }
 	elseif vim.fn.executable("fd") then
-		cmd = { "fd", ".", folders_str, _WorkWorkOpts.integrations.telescope.fd_opts }
+		cmd = { "fd", ".", folders, _WorkWorkOpts.integrations.telescope.opts.fd_opts }
 	else
-		cmd = { "find", folders_str, _WorkWorkOpts.integrations.telescope.find_opts }
+		cmd = { "find", folders, _WorkWorkOpts.integrations.telescope.opts.find_opts }
 	end
 
 	cmd = vim.tbl_flatten(cmd)
@@ -63,7 +63,16 @@ M.workspace_files = function(opts)
 	pickers
 		.new(opts, {
 			prompt_title = "Workspace Files:",
-			finder = finders.new_oneshot_job(cmd),
+			finder = finders.new_oneshot_job(cmd, {
+				entry_maker = make_entry.gen_from_file({
+					path_display = function(_, entry)
+						if _WorkWorkOpts.integrations.telescope.opts.relative_path_entries then
+							return utils.relative_path(entry, vim.fn.getcwd())
+						end
+						return entry
+					end,
+				}),
+			}),
 			previewer = config.file_previewer(opts),
 			sorter = config.file_sorter(opts),
 		})
