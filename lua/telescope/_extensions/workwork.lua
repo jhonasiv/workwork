@@ -8,5 +8,6 @@ return require("telescope").register_extension({
 	exports = {
 		select = integration.select,
 		files = integration.files,
+		git_files = integration.git_files,
 	},
 })
