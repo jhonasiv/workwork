@@ -5,6 +5,10 @@ M.actions = require("workwork.actions")
 M.config = require("workwork.config")
 
 M.setup = function(user_opts)
+	if not pcall(require, "plenary") then
+		error("nvim-lua/plenary.nvim is a required dependency, please install it.")
+	end
+
 	_WorkWorkOpts = vim.tbl_deep_extend("force", M.config.default, user_opts)
 	user_opts = _WorkWorkOpts
 
