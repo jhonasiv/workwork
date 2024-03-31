@@ -2,10 +2,6 @@ if not pcall(require, "telescope") then
 	error("nvim-telescope/telescope.nvim must be loaded to use this integration")
 end
 
-if not pcall(require, "plenary") then
-	error("nvim-lua/plenary must be loaded to use this integration")
-end
-
 local config = require("telescope.config").values
 local pickers = require("telescope.pickers")
 local finders = require("telescope.finders")
