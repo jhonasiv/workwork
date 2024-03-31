@@ -9,7 +9,7 @@ M._add_folder_to_workspace = function(root_path, ws)
 	end
 	table.insert(_WorkWorkWorkspaces[ws], root_path)
 
-	M._save()
+	M.save()
 end
 
 M._create = function(root_path, ws)
