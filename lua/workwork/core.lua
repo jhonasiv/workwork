@@ -21,7 +21,7 @@ M._create = function(root_path, ws)
 
 	_WorkWorkWorkspaces[ws] = { root_path }
 
-	if opts.autoselect_on_create then
+	if opts.autoselect.on_create then
 		M.current_workspace = ws
 	end
 
@@ -31,6 +31,17 @@ M._create = function(root_path, ws)
 end
 
 M._delete = function(ws)
+	local opts = _WorkWorkOpts or {}
+
+	_WorkWorkWorkspaces[ws] = nil
+
+	if opts.autosave == true or opts.autosave.on_delete then
+		M.save()
+	end
+end
+
+M._rename = function(ws, new_name)
+	_WorkWorkWorkspaces[new_name] = _WorkWorkWorkspaces[ws]
 	_WorkWorkWorkspaces[ws] = nil
 end
 
@@ -57,6 +68,10 @@ end
 M._list_folders = function(ws)
 	ws = ws or M._currently_selected()
 	return vim.tbl_values(_WorkWorkWorkspaces[ws] or {})
+end
+
+M._possible_to_remove_folder = function(ws)
+	return #M._list_folders(ws) ~= 1
 end
 
 M._remove_folder = function(root_path, ws)
