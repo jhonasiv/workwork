@@ -9,5 +9,7 @@ return require("telescope").register_extension({
 		select = integration.select,
 		files = integration.files,
 		git_files = integration.git_files,
+		delete = integration.delete,
+		remove_folder = integration.remove_folder,
 	},
 })

@@ -3,7 +3,11 @@ local M = {}
 M.default = {
 	state_file = vim.fn.stdpath("state") .. "/workwork.json",
 	autoload_selected = "last",
-	autoselect_on_create = true,
+	autoselect = { on_create = true },
+	autosave = {
+		on_create = true,
+		on_delete = false,
+	},
 	integrations = {
 		telescope = {
 			enable = false,

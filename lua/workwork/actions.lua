@@ -32,7 +32,7 @@ M.create = function()
 end
 
 M.delete = function()
-	vim.ui.select(core.list_workspaces(), { prompt = "Name the workspace you want to delete: " }, function(ws)
+	vim.ui.select(core._list_workspaces(), { prompt = "Name the workspace you want to delete: " }, function(ws)
 		if ws == nil then
 			return
 		end
@@ -57,13 +57,25 @@ M.add_folder = function(ws)
 	end)
 end
 
-M.remove_folder = function(ws)
+M.remove_folder = function(ws, opts)
+	opts = opts or {}
 	ws = ws or core._currently_selected()
-	vim.ui.select(core.list_workspaces(), { prompt = "Folder to remove: " }, function(folder)
+	vim.ui.select(core._list_folders(ws), { prompt = "Folder to remove: " }, function(folder)
 		if folder == nil then
 			return
 		end
 		core._remove_folder(folder, ws)
+		-- Since ui.select is asynchronous, inject an after callback for functionality that should happen after it ends
+		if opts.after ~= nil then
+			opts.after()
+		end
+	end)
+end
+
+M.rename = function(ws)
+	ws = ws or M._currently_selected()
+	vim.ui.input({ prompt = "Rename " .. ws .. " to: ", default = ws }, function(name)
+		core._rename(ws, name)
 	end)
 end
 
