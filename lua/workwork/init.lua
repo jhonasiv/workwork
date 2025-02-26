@@ -16,8 +16,6 @@ M.setup = function(user_opts)
 	local create_file_anew = file == nil
 	if file then
 		file:close()
-	else
-		error("Could not open file at " .. user_opts.state_file)
 	end
 
 	if create_file_anew then
@@ -33,10 +31,15 @@ M.setup = function(user_opts)
 	-- autoload workspace on setup
 	core.load()
 
+	if create_file_anew then
+		M.actions = require("workwork.actions")
+		M.actions.create()
+	end
+
 	if user_opts.integrations.fzf_lua.enabled then
 		local integration = require("workwork.integrations.fzf").setup(user_opts)
 		M.actions = vim.tbl_deep_extend("force", M.actions, integration)
-	elseif user_opts.integrations.telescope then
+	elseif user_opts.integrations.telescope.enabled then
 		local integration = require("workwork.integrations.telescope")
 		M.actions = vim.tbl_deep_extend("force", M.actions, integration)
 	end

@@ -51,6 +51,12 @@ M._select = function(ws)
 	end
 
 	M.current_workspace = ws
+	print("Selected workspace " .. ws)
+
+	local folders = M._list_folders(ws)
+	for _, folder in ipairs(folders) do
+		vim.lsp.buf.add_workspace_folder(folder)
+	end
 end
 
 M._currently_selected = function()
@@ -115,13 +121,17 @@ M.load = function()
 		local workwork_data = vim.fn.json_decode(json_data) or {}
 		_WorkWorkWorkspaces = workwork_data.workspaces or {}
 		if opts.autoload_selected == "last" then
-			M.current_workspace = workwork_data.selected or nil
+			M._select(workwork_data.selected)
 		end
 		file:close()
 		return
 	end
 
 	error("Could not load workspace because workwork state file cannot be opened at " .. opts.state_file)
+end
+
+M.selected = function()
+	return M.current_workspace or "none"
 end
 
 return M

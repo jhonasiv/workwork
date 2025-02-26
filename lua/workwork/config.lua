@@ -12,7 +12,18 @@ M.default = {
 		telescope = {
 			enable = false,
 			opts = {
-				find_opts = { "-type", "f", "-not", "-path", "'*/\\.git/*'", "-printf", "'%P\n'" },
+				find_opts = {
+					"-type",
+					"f",
+					"-not",
+					"-path",
+					"*/\\.git/*",
+					"-not",
+					"-path",
+					"*/\\.jj/*",
+					"-printf",
+					"%P\n",
+				},
 				fd_opts = { "--color=never", "--type", "f", "--hidden", "--follow", "--exclude", ".git" },
 				relative_path_entries = false,
 			},

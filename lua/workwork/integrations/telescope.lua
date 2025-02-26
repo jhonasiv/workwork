@@ -148,15 +148,15 @@ M.files = function(opts)
 	opts = opts or {}
 	local folders = core._list_folders()
 	local cmd
-	if vim.fn.executable("fdfind") then
+	if vim.fn.executable("fdfind") == 1 then
 		cmd = { "fdfind", ".", folders, _WorkWorkOpts.integrations.telescope.opts.fd_opts }
-	elseif vim.fn.executable("fd") then
+	elseif vim.fn.executable("fd") == 1 then
 		cmd = { "fd", ".", folders, _WorkWorkOpts.integrations.telescope.opts.fd_opts }
 	else
 		cmd = { "find", folders, _WorkWorkOpts.integrations.telescope.opts.find_opts }
 	end
 
-	cmd = vim.tbl_flatten(cmd)
+	cmd = vim.iter(cmd):flatten():totable()
 
 	pickers
 		.new(opts, {
@@ -185,14 +185,20 @@ M.git_files = function(opts)
 	for _, folder in ipairs(folders) do
 		local folder_lst = vim.split(folder, "/")
 		local folder_name = folder_lst[#folder_lst]
-		local target_folder = Path:new(folder):find_upwards(".git").filename
+		local folder_path = Path:new(folder)
+		local target_folder = folder_path / ".git"
+		local filter_by_folder = ""
+		if not target_folder:exists() then
+			target_folder = Path:new(folder):find_upwards(".git").filename
+			filter_by_folder = folder_name
+		end
 
 		local job = Job:new({
 			command = "grep",
-			args = { folder_name },
+			args = { filter_by_folder },
 			writer = Job:new({
 				command = "git",
-				args = { "--git-dir=" .. target_folder, "ls-files" },
+				args = { "--git-dir=" .. tostring(target_folder), "ls-files" },
 				cwd = "/usr/bin",
 			}),
 		})
