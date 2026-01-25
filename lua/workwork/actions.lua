@@ -1,10 +1,4 @@
-if not pcall(require, "plenary") then
-	error("nvim-lua/plenary plugin is required but it is not loaded")
-end
-
-local Path = require("plenary.path")
 local uv = require("luv")
-
 local core = require("workwork.core")
 
 local M = {}
@@ -51,8 +45,8 @@ M.add_folder = function(ws)
 			return
 		end
 
-		local folder_path = Path:new(folder)
-		local abs_folder_path = folder_path:absolute()
+		local folder_path = vim.fs.normalize(folder)
+		local abs_folder_path = vim.fs.abspath(folder_path)
 		core._add_folder_to_workspace(abs_folder_path, ws)
 	end)
 end
